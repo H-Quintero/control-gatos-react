@@ -54,6 +54,7 @@ function App() {
         gasto.id ? gasto : gastoState)
 
         setGastos(gastoActualizado)
+        setGastoEditar({})
     } else {
       gasto.id = generarID();
       gasto.fecha = Date.now();
@@ -104,6 +105,7 @@ function App() {
           setAnimarModal={setAnimarModal}
           guardarGasto={guardarGasto}
           gastoEditar={gastoEditar}
+          setGastoEditar={setGastoEditar}
         />
       )}
     </div>
