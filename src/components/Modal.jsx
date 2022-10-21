@@ -1,16 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Mensaje from './Mensaje'
 
 import CerrarBtn from '../assets/img/cerrar.svg'
 
-const Modal = ({ setModal, animarModal, setAnimarModal, guardarGasto }) => {
+const Modal = ({ 
+  setModal, 
+  animarModal, 
+  setAnimarModal, 
+  guardarGasto,
+  gastoEditar 
+}) => {
 
   const [ mensaje, setMensaje ] = useState('')
 
   const [ nombreGasto, setNombreGasto ] = useState('')
   const [ cantidadGasto, setCantidadGasto ] = useState('')
   const [ categoria, setCategoria ] = useState('')
+
+  const [ id, setID ] = useState('')
+  const [ fecha, setFecha ] = useState('')
+
+  useEffect(() => {
+    if(Object.keys(gastoEditar).length > 0) {
+      setNombreGasto(gastoEditar.nombreGasto)
+      setCantidadGasto(gastoEditar.cantidadGasto)
+      setCategoria(gastoEditar.categoria)
+      setID(gastoEditar.id)
+      setFecha(gastoEditar.fecha)
+    }
+  }, [])
 
   const ocultarModal = () => {    
     setAnimarModal(false)
@@ -32,7 +51,7 @@ const Modal = ({ setModal, animarModal, setAnimarModal, guardarGasto }) => {
       return
     }
 
-    guardarGasto({ nombreGasto, cantidadGasto, categoria })
+    guardarGasto({ nombreGasto, cantidadGasto, categoria, id, fecha })
   }
 
   return (
@@ -49,7 +68,9 @@ const Modal = ({ setModal, animarModal, setAnimarModal, guardarGasto }) => {
       onSubmit={handleSubmit}
       className={`formulario ${animarModal ? 'animar' : 'cerrar'}`}>
 
-      <legend>Nuevo Gasto</legend>
+      <legend>
+        {gastoEditar.nombreGasto ? 'Editar Gasto' : 'Nuevo Gasto'}
+      </legend>
 
       {mensaje && <Mensaje tipo='error'>{mensaje}</Mensaje>}
       
@@ -68,6 +89,7 @@ const Modal = ({ setModal, animarModal, setAnimarModal, guardarGasto }) => {
         <input 
           id='cantidad'
           type='number'
+          step='any'
           placeholder='Añade cantidad de gasto'
           value={cantidadGasto}
           onChange={e => setCantidadGasto(Number(e.target.value))}
@@ -93,7 +115,7 @@ const Modal = ({ setModal, animarModal, setAnimarModal, guardarGasto }) => {
 
       <input 
         type='submit'
-        value='Añadir Gasto'
+        value={gastoEditar.nombreGasto ? 'Guardar Cambios' : 'Nuevo Gasto'}
       />
     </form>
 

@@ -11,6 +11,7 @@ const ListadoGastos = ({ gastos, setGastoEditar }) => {
           key={gasto.id}
           gasto={gasto}
           setGastoEditar={setGastoEditar}
+          
         />
       ))}
     </div>
